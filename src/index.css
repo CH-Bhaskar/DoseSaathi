@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #f0fdfa;
+  --color-brand-100: #ccfbf1;
+  --color-brand-200: #99f6e4;
+  --color-brand-300: #5eead4;
+  --color-brand-400: #2dd4bf;
+  --color-brand-500: #14b8a6;
+  --color-brand-600: #0d9488;
+  --color-brand-700: #0f766e;
+  --color-brand-800: #115e59;
+  --color-brand-900: #134e4a;
+  --color-ink-50: #f6fbf9;
+  --color-ink-100: #eef4f1;
+  --color-ink-700: #334155;
+  --color-ink-900: #0f172a;
+  --font-sans: system-ui, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+}
+
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-ink-50 text-ink-900 antialiased;
+  font-family: var(--font-sans);
+}
+
+/* Large, visible focus state for keyboard users. */
+:focus-visible {
+  outline: 3px solid var(--color-brand-600);
+  outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+
+/* Large-text accessibility mode (toggled in Profile settings). */
+html[data-large-text="true"] {
+  font-size: 20px;
+}
+
+/* High-contrast accessibility mode. */
+html[data-high-contrast="true"] body {
+  background: #ffffff;
+  color: #000000;
+}
+html[data-high-contrast="true"] .card {
+  border: 2px solid #000000;
+  box-shadow: none;
+}
+/* High-contrast additions for the extension's new components: status
+ * badges (call history, medication cards) get a solid outline so they
+ * stay distinct without relying on pastel fills, the amber notice
+ * boxes (provider-unavailable, pregnancy safety) become plain white
+ * with a black border, and the keyboard focus ring turns black for
+ * maximum visibility. Large-text mode needs no extra rules: the new
+ * components use rem-based text and min-height utilities, so they
+ * scale with the root font size. */
+html[data-high-contrast="true"] .badge {
+  border: 2px solid currentColor;
+}
+html[data-high-contrast="true"] .bg-amber-50 {
+  background: #ffffff;
+  border: 2px solid #000000;
+}
+html[data-high-contrast="true"] :focus-visible {
+  outline-color: #000000;
+}
+
+/* Reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Shared button base as a real utility so variants can @apply it. */
+@utility btn {
+  display: inline-flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  transition-property: color, background-color, border-color;
+  transition-duration: 150ms;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm;
+  }
+  .btn-primary {
+    @apply btn bg-brand-700 text-white hover:bg-brand-800;
+  }
+  .btn-secondary {
+    @apply btn border-2 border-brand-700 bg-white text-brand-800 hover:bg-brand-50;
+  }
+  .btn-ghost {
+    @apply btn text-brand-800 hover:bg-brand-50;
+  }
+  .btn-danger {
+    @apply btn bg-red-700 text-white hover:bg-red-800;
+  }
+  .input {
+    @apply w-full rounded-xl border-2 border-slate-300 bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-brand-600 focus:outline-none;
+  }
+  .label {
+    @apply mb-1.5 block text-base font-semibold text-slate-800;
+  }
+  .field-error {
+    @apply mt-1 text-sm font-medium text-red-700;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold;
+  }
+}
